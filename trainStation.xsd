@@ -1,0 +1,435 @@
+﻿<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://inventivio.com/trainstation" xmlns:ts="http://inventivio.com/trainstation" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+
+  <!--attributeGroup does not work...-->
+  <!-- targetNamespace and the xmlns:ts are necessary to define and use global types or attributes. -->
+  <!-- https://docs.microsoft.com/en-us/sql/relational-databases/sqlxml-annotated-xsd-schemas-using/specifying-a-target-namespace-using-the-targetnamespace-attribute-sqlxml-4-0?view=sql-server-ver16 -->
+  
+  
+  <!-- Problably will not use -->
+  <!--
+  <xs:complexType name="GlobalComplexType">
+    <xs:sequence>
+        <xs:element name="Example1" type="xs:string" />
+        <xs:element name="Example2" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  -->
+
+  <!-- Combination of global type and global attribute:
+  <xs:simpleType name="example">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="pounds" />
+      <xs:enumeration value="euros" />
+      <xs:enumeration value="dollars" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attribute name="shoeSizes" default="pounds">
+      <xs:simpleType>
+        <xs:list itemType="ts:example"/>
+      </xs:simpleType>
+  </xs:attribute>  -->
+
+  <!-- GLOBAL types with restrictions -->
+
+  <xs:simpleType name="elevation_G">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="-10"/>
+      <xs:maxInclusive value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <!-- https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256162(v=vs.100) -->
+  <!-- Example:     <myelement listOfIntegers='1 100 9 4000 0'/>   -->
+  <xs:simpleType name="listOfIntegers_G">
+    <xs:list itemType="xs:integer"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="listOfFloat_G">
+    <xs:list itemType="xs:float"/>
+  </xs:simpleType>
+
+  <!-- not being used for now -->
+  <xs:simpleType name='restrictedListOfIntegers_G'>
+    <xs:restriction base='ts:listOfIntegers_G'>
+      <xs:maxLength value='5'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name='pointXY_G'>
+    <xs:restriction base='ts:listOfFloat_G'>
+      <xs:maxLength value='2'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="typeWC_G">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="men" />
+      <xs:enumeration value="women" />
+      <xs:enumeration value="mix" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="typeSHOP_G">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="restaurant" />
+      <xs:enumeration value="pharmacy" />
+      <xs:enumeration value="bakery" />
+      <xs:enumeration value="supermarket" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+
+
+  <xs:element name="trainstation">
+
+
+
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element name="mainbuildingArea" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="shop" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" default="shop"/>
+                      <xs:attribute type="xs:string" name="description"/>
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional"/>
+                      <xs:attribute type="ts:typeSHOP_G" name="type-of-shop"/>
+                      <xs:attribute type="xs:string" name="opening-hours"/>
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="wc" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" default="wc"/>
+                      <xs:attribute type="xs:string" name="description" default="rest room"/>
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="ts:typeWC_G" name="type" default="mix"/>
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="entrance" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" default="entrance"/>
+                      <xs:attribute type="xs:string" name="description"/>
+                      <xs:attribute type="xs:string" name="outsideA"/> <!-- from outside(zone A) to inside (zone B) use ID's of paths. If we do not know use namming only -->
+                      <xs:attribute type="xs:string" name="insideB"/>
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="ts:listOfIntegers_G" name="list-of-floors" use="optional"/>
+            <xs:attribute type="xs:integer" name="numberofentrances"/>
+            <xs:attribute type="xs:string" name="ref" use="required"/>
+            <!-- <xs:attribute ref="ts:shoeSizes" use="required"/> -->
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="outsideArea" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="street" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional" default="street"/>
+                      <xs:attribute type="xs:string" name="description" use="optional"/>
+                      <xs:attribute type="xs:string" name="intersectWith" use="optional"/> <!-- what are the other streets and roundabouts that this intersects with (ID's) -->
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roundabout" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute type="xs:string" name="description" use="optional"/>
+                      <xs:attribute type="xs:string" name="intersectWith" use="optional"/> <!-- what are the other streets and roundabouts that this intersects with (ID's) -->
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="building" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional" default="external building"/>
+                      <xs:attribute type="ts:listOfIntegers_G" name="list-of-floors" use="optional"/>
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="green-space" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute type="xs:string" name="description" use="optional"/>
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="river" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute type="xs:string" name="description" use="optional"/>
+                      <xs:attribute type="xs:string" name="river-flow-direction" use="optional"/> <!-- can be implemented later -->
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="bike-road" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute type="xs:string" name="description" use="optional"/>
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="pedestrian-road" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="intersectWith" type="xs:string"  use="optional"/>
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <!-- Another name for foorpath is fussweg in German -->
+              <xs:element name="footpath" maxOccurs="unbounded" minOccurs="0"> <!-- This is represented with a line like ______ with directions that the user can take -->
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute type="ts:pointXY_G" name="pointA" use="optional"/> <!-- starting point(x,y) and end point (x,y) -->
+                      <xs:attribute type="ts:pointXY_G" name="pointB" use="optional"/>
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="square-space" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="bike-park" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="name" type="xs:string"  use="optional"/>
+                            <xs:attribute name="description" type="xs:string" use="optional"/>
+                            <xs:attribute type="xs:string" name="ref" use="required"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="car-park" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="name" type="xs:string"  use="optional"/>
+                            <xs:attribute name="description" type="xs:string" use="optional"/>
+                            <xs:attribute type="xs:string" name="ref" use="required"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="stop-BUS" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="name" type="xs:string"  use="optional"/>
+                            <xs:attribute name="description" type="xs:string" use="optional"/>
+                            <xs:attribute type="xs:string" name="ref" use="required"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="stop-SEV" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="name" type="xs:string"  use="optional"/>
+                            <xs:attribute name="description" type="xs:string" use="optional"/>
+                            <xs:attribute type="xs:string" name="ref" use="required"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string"  use="optional"/>
+                  <xs:attribute name="description" type="xs:string" use="optional"/>
+                  <xs:attribute name="ref" type="xs:string"  use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="platformArea" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="railroad" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="type" use="optional"/>
+                      <xs:attribute type="xs:string" name="directionA" use="optional"/>
+                      <xs:attribute type="xs:string" name="directionB" use="optional"/>
+                      <xs:attribute type="xs:string" name="description" use="optional"/>
+                      <xs:attribute type="xs:byte" name="number" use="required"/>
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="platform" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="underground-path" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="bridge-path" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="stairs" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/> <!-- rolling stairs and normal stairs detail -->
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="entrance" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" default="entrance"/>
+                      <xs:attribute type="xs:string" name="description"/>
+                      <xs:attribute type="xs:string" name="outsideA"/> <!-- from outside(zone A) to inside (zone B) use ID's of paths. If we do not know use namming only -->
+                      <xs:attribute type="xs:string" name="insideB"/>
+                      <xs:attribute name="floor-level" type="ts:elevation_G" default="0" use="optional" />
+                      <xs:attribute type="xs:string" name="ref" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ticket-machine" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="info-point" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="elevator" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="list-of-floors" type="ts:listOfIntegers_G" use="optional"/> <!-- also used in mainbuildingArea -->
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="crossing-gate" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="name" type="xs:string"  use="optional"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                      <xs:attribute name="ref" type="xs:string"  use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="lang" default="english"/> <!-- focus on english translations for now -->
+      <xs:attribute type="xs:string" name="name" use="required"/> <!-- Name of the train station -->
+      <xs:attribute type="xs:string" name="scale" use="optional"/> <!-- scale, 1 pixel corresponds to how many meters -->
+      <xs:attribute type="xs:integer" name="compass-orientation" default="360"/> <!-- use the degress of rotation to know the orientation -->
+      <xs:attribute type="xs:integer" name="year" use="optional"/>
+      <xs:attribute type="xs:string" name="organization" use="optional" default="DB"/>
+      <!-- not necessary: <xs:attribute type="xs:string" name="ref" use="required"/> -->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
