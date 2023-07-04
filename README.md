@@ -42,4 +42,10 @@ Each train station has its own directory containing both PNG and PDF versions of
 
 To access additional train station floor plans, you can also visit our [Google Drive folder](https://drive.google.com/drive/folders/1mb3frqlO70MktOJYpr-8I_btsUQ_3VbI) containing the files.
 
-...
+     
+## Citation :page_with_curl:
+If you use this dataset, please cite:
+```
+location = {Corfu, Greece},
+series = {PETRA '23}
+}
