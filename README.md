@@ -1,7 +1,9 @@
 # Train Station🚉 Floor Plans Database
 
 This repository is an open-access database of train station floor plans intended to be used for various purposes, including converting them into audio-tactile representations for people with visual impairments (BVI). Currently, the repository includes floor plans in PNG and PDF formats for train stations in Germany's Baden-Wuttermberg and Bavaria districts. However, we aim to expand the collection to include floor plans from other European train stations in the future.
-![Nuremberg Railway station floor plan](path/to/your/image.png)
+
+
+![Nuremberg Railway station floor plan](NurembergHbf.png)
 
 ## <span style="font-size:larger;">**Background**</span>
 This project aims to provide a valuable resource for individuals with visual impairments by making train station floor plans accessible through audio-tactile representations. By converting the floor plans into SVG format, we can create tactile representations that can be interpreted through touch and sound, allowing individuals with BVI to navigate train stations independently and safely.
