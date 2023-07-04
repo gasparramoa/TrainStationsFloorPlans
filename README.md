@@ -40,6 +40,6 @@ root/
 
 Each train station has its own directory containing both PNG and PDF versions of the floor plans. Additional European 🌍 train stations will be added to the corresponding country and district directories in the future.
 
-To access additional train station floor plans, you can also visit our [Google Drive folder]([https://drive.google.com/your-folder-link](https://drive.google.com/drive/folders/1mb3frqlO70MktOJYpr-8I_btsUQ_3VbI?usp=sharing)https://drive.google.com/drive/folders/1mb3frqlO70MktOJYpr-8I_btsUQ_3VbI?usp=sharing) containing the files.
+To access additional train station floor plans, you can also visit our [Google Drive folder](https://drive.google.com/drive/folders/1mb3frqlO70MktOJYpr-8I_btsUQ_3VbI) containing the files.
 
 ...
