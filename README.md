@@ -51,7 +51,9 @@ Our dataset is characterized by its diversity, encompassing a wide range of trai
 
 ## Link dataset
 
-To access the train station floor plans dataset, you can visit the following link: [[Zenodo](https://drive.google.com/drive/folders/1mb3frqlO70MktOJYpr-8I_btsUQ_3VbI)].
+To access the train station floor plans dataset, you can visit the following link: [[Zenodo](https://zenodo.org/record/8275713)].
+
+Once downloaded, ensure all split volumes (e.g., rootVolume.zip.001, rootVolume.zip.002, ..., rootVolume.zip.008) are in the same directory. Right-click on the first volume, ```rootVolume.zip.001```, select "Extract Here" or "Extract to" and WinRAR will automatically handle the extraction of files from all volumes. After completion, the full dataset will be accessible in the destination directory.
 
 **August 2023 Version** - 2831 train stations - 7.70 GB. 
 
