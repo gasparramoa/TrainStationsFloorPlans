@@ -2,7 +2,7 @@
 
 
 
-This repository is an open-access database of train station floor plans focused on Baden-Wuttemberg and Bavaria regions in Germany. It includes PDF and PNG formats for 2831 files. The database aims to expand with floor plans from other European train stations, supporting transportation research and accessibility initiatives.
+This repository is an open-access database of train station floor plans focused on Baden-Wuttemberg and Bavaria regions in Germany. It includes PDF and PNG formats of over 2800 train stations. The database aims to expand with floor plans from other European train stations, supporting transportation research and accessibility initiatives.
 
 ![Nuremberg Railway station](banner-min.png) Nuremberg Main Railway train station. (Collected from the [BEG](https://www.bayern-fahrplan.de/de/zusaetzliche-informationen/stationsdatenbank) database). 
 
@@ -53,6 +53,8 @@ Our dataset is characterized by its diversity, encompassing a wide range of trai
 
 To access the train station floor plans dataset, you can visit the following link: [[Zenodo](https://drive.google.com/drive/folders/1mb3frqlO70MktOJYpr-8I_btsUQ_3VbI)].
 
+**August 2023 Version** - 2831 train stations - 7.70 GB. 
+
 ## Contribution Guidelines
 Contributions to this project are welcome! If you have floor plans for train stations in other European regions, please follow these steps to contribute:
 
@@ -63,8 +65,21 @@ Contributions to this project are welcome! If you have floor plans for train sta
 
      
 ## Citation :page_with_curl:
-If you use this dataset, please cite:
+If you use this dataset, please cite [[ACM paper](https://dl.acm.org/doi/abs/10.1145/3594806.3594839)]:
 ```
+@inproceedings{10.1145/3594806.3594839,
+author = {Ram\^{o}a, Gaspar and Moured, Omar and M\"{u}ller, Karin and Schwarz, Thorsten and Stiefelhagen, Rainer},
+title = {Display and Use of Station Floor Plans on 2D Pin Matrix Displays for Blind and Visually Impaired People.},
+year = {2023},
+isbn = {9798400700699},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3594806.3594839},
+doi = {10.1145/3594806.3594839},
+booktitle = {Proceedings of the 16th International Conference on PErvasive Technologies Related to Assistive Environments},
+pages = {254–258},
+numpages = {5},
+keywords = {train station floor plans, information access, user interface design, blind and visually impaired, 2d refreshable pin-matrix displays, audio-tactile user interface},
 location = {Corfu, Greece},
 series = {PETRA '23}
 }
